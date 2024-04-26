@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?><database name="postgres" schema="public" type="PostgreSQL - 16.2 (Debian 16.2-1.pgdg120+2)">
+   <sequences>
+      <sequence increment="1" name="companies_company_id_seq" startValue="1"/>
+      <sequence increment="1" name="contacts_contact_id_seq" startValue="1"/>
+   </sequences>
+   <tables>
+      <table name="companies" numRows="200" remarks="companies" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('companies_company_id_seq'::regclass)" digits="0" id="0" name="company_id" nullable="false" remarks="" size="10" type="serial" typeCode="4">
+            <child column="company_id" foreignKey="fk_company" implied="false" onDeleteCascade="false" schema="public" table="contacts"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="company_name" nullable="false" remarks="" size="255" type="varchar" typeCode="12"/>
+         <primaryKey column="company_id" sequenceNumberInPK="1"/>
+         <index name="companies_pkey" unique="true">
+            <column ascending="true" name="company_id"/>
+         </index>
+      </table>
+      <table name="contacts" numRows="100" remarks="contacts" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('contacts_contact_id_seq'::regclass)" digits="0" id="0" name="contact_id" nullable="false" remarks="" size="10" type="serial" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="company_id" nullable="true" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="company_id" foreignKey="fk_company" implied="false" onDeleteCascade="false" schema="public" table="companies"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="contact_name" nullable="false" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="phone" nullable="true" remarks="" size="25" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="email" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <primaryKey column="contact_id" sequenceNumberInPK="1"/>
+         <index name="contacts_pkey" unique="true">
+            <column ascending="true" name="contact_id"/>
+         </index>
+      </table>
+   </tables>
+</database>

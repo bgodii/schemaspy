@@ -1,0 +1,36 @@
+version: '3.9'
+services:
+
+  postgres:
+    container_name: postgres
+    image: postgres:16.2
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_PASSWORD: postgres
+
+  schemaspy:
+    image: schemaspy/schemaspy:6.2.4
+    volumes:
+      - ./schemaspy/output:/output
+      - ./schemaspy/config:/config
+    container_name: "schemaspy_local"
+    command: [
+      "-configFile",
+      "/config/schemaspy.properties", 
+      "-imageformat",
+      "svg"
+    ]
+    depends_on:
+      - postgres
+    network_mode: "service:postgres"
+  
+  server:
+    image: httpd:2.4
+    ports:
+      - "4500:80"
+    volumes:
+      - ./schemaspy/output:/usr/local/apache2/htdocs
